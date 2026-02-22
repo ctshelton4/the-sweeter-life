@@ -18,123 +18,142 @@
 
   // ---- Silk Background Animation (adapted from 21st.dev) ----
   function handleSilkBackground() {
-    var canvas = document.getElementById('heroCanvas');
-    if (!canvas) return;
+    try {
+      var canvas = document.getElementById('heroCanvas');
+      if (!canvas) return;
 
-    var ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) {
+        // Canvas not supported — hide it so CSS gradient fallback shows
+        canvas.style.display = 'none';
+        return;
+      }
 
-    // Check for reduced motion preference
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      canvas.style.display = 'none';
-      return;
-    }
+      // Check for reduced motion preference
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        canvas.style.display = 'none';
+        return;
+      }
 
-    var animationId;
-    var time = 0;
-    var speed = 0.03;    // Visible flowing movement
-    var scale = 1.8;     // Slightly zoomed in for tighter pattern
-    var noiseIntensity = 0.35; // Smooth silk
+      var animationId;
+      var time = 0;
+      var speed = 0.03;    // Visible flowing movement
+      var scale = 1.8;     // Slightly zoomed in for tighter pattern
+      var noiseIntensity = 0.35; // Smooth silk
 
-    // Mobile: larger steps for performance, desktop: sharper
-    var isMobile = window.innerWidth < 768;
-    var step = isMobile ? 4 : 2;
+      // Mobile: larger steps for performance, desktop: sharper
+      var isMobile = window.innerWidth < 768;
+      var step = isMobile ? 4 : 2;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      isMobile = window.innerWidth < 768;
-      step = isMobile ? 4 : 2;
-    }
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        isMobile = window.innerWidth < 768;
+        step = isMobile ? 4 : 2;
+      }
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
 
-    // Simple noise function
-    function noise(x, y) {
-      var G = 2.71828;
-      var rx = G * Math.sin(G * x);
-      var ry = G * Math.sin(G * y);
-      return (rx * ry * (1 + x)) % 1;
-    }
+      // Simple noise function
+      function noise(x, y) {
+        var G = 2.71828;
+        var rx = G * Math.sin(G * x);
+        var ry = G * Math.sin(G * y);
+        return (rx * ry * (1 + x)) % 1;
+      }
 
-    // Footer-matching chocolate base: #4A2C2A = rgb(74, 44, 42)
-    // Silk highlights: subtle warm shift, not bright
-    var baseR = 74, baseG = 44, baseB = 42;
+      // Footer-matching chocolate base: #4A2C2A = rgb(74, 44, 42)
+      // Silk highlights: subtle warm shift, not bright
+      var baseR = 74, baseG = 44, baseB = 42;
 
-    function animate() {
-      var width = canvas.width;
-      var height = canvas.height;
+      function animate() {
+        try {
+          var width = canvas.width;
+          var height = canvas.height;
+          if (width === 0 || height === 0) {
+            animationId = requestAnimationFrame(animate);
+            return;
+          }
 
-      // Create silk pattern
-      var imageData = ctx.createImageData(width, height);
-      var data = imageData.data;
+          // Create silk pattern
+          var imageData = ctx.createImageData(width, height);
+          var data = imageData.data;
 
-      for (var x = 0; x < width; x += step) {
-        for (var y = 0; y < height; y += step) {
-          var u = (x / width) * scale;
-          var v = (y / height) * scale;
+          for (var x = 0; x < width; x += step) {
+            for (var y = 0; y < height; y += step) {
+              var u = (x / width) * scale;
+              var v = (y / height) * scale;
 
-          var tOffset = speed * time;
-          var tex_x = u;
-          var tex_y = v + 0.04 * Math.sin(7.0 * tex_x - tOffset);
+              var tOffset = speed * time;
+              var tex_x = u;
+              var tex_y = v + 0.04 * Math.sin(7.0 * tex_x - tOffset);
 
-          var pattern = 0.55 + 0.45 * Math.sin(
-            5.0 * (tex_x + tex_y +
-              Math.cos(3.0 * tex_x + 5.0 * tex_y) +
-              0.02 * tOffset) +
-            Math.sin(18.0 * (tex_x + tex_y - 0.1 * tOffset))
-          );
+              var pattern = 0.55 + 0.45 * Math.sin(
+                5.0 * (tex_x + tex_y +
+                  Math.cos(3.0 * tex_x + 5.0 * tex_y) +
+                  0.02 * tOffset) +
+                Math.sin(18.0 * (tex_x + tex_y - 0.1 * tOffset))
+              );
 
-          var rnd = noise(x, y);
-          var intensity = Math.max(0, Math.min(1, pattern - rnd / 20.0 * noiseIntensity));
+              var rnd = noise(x, y);
+              var intensity = Math.max(0, Math.min(1, pattern - rnd / 20.0 * noiseIntensity));
 
-          // More contrast: dark chocolate shadows to warm golden highlights
-          var r = Math.floor(baseR * 0.45 + baseR * 1.1 * intensity);
-          var g = Math.floor(baseG * 0.4 + baseG * 0.95 * intensity);
-          var b = Math.floor(baseB * 0.4 + baseB * 0.8 * intensity);
+              // More contrast: dark chocolate shadows to warm golden highlights
+              var r = Math.floor(baseR * 0.45 + baseR * 1.1 * intensity);
+              var g = Math.floor(baseG * 0.4 + baseG * 0.95 * intensity);
+              var b = Math.floor(baseB * 0.4 + baseB * 0.8 * intensity);
 
-          // Fill the step x step block
-          for (var dx = 0; dx < step && x + dx < width; dx++) {
-            for (var dy = 0; dy < step && y + dy < height; dy++) {
-              var i = ((y + dy) * width + (x + dx)) * 4;
-              if (i < data.length) {
-                data[i] = r;
-                data[i + 1] = g;
-                data[i + 2] = b;
-                data[i + 3] = 255;
+              // Fill the step x step block
+              for (var dx = 0; dx < step && x + dx < width; dx++) {
+                for (var dy = 0; dy < step && y + dy < height; dy++) {
+                  var i = ((y + dy) * width + (x + dx)) * 4;
+                  if (i < data.length) {
+                    data[i] = r;
+                    data[i + 1] = g;
+                    data[i + 2] = b;
+                    data[i + 3] = 255;
+                  }
+                }
               }
             }
           }
+
+          ctx.putImageData(imageData, 0, 0);
+
+          // Soft vignette for depth
+          var overlay = ctx.createRadialGradient(
+            width / 2, height / 2, 0,
+            width / 2, height / 2, Math.max(width, height) * 0.6
+          );
+          overlay.addColorStop(0, 'rgba(74, 44, 42, 0)');
+          overlay.addColorStop(1, 'rgba(30, 16, 14, 0.4)');
+          ctx.fillStyle = overlay;
+          ctx.fillRect(0, 0, width, height);
+
+          time += 1;
+          animationId = requestAnimationFrame(animate);
+        } catch (e) {
+          // Animation frame error — stop animation, CSS fallback shows
+          canvas.style.display = 'none';
         }
       }
 
-      ctx.putImageData(imageData, 0, 0);
+      // Only animate when hero is visible (saves CPU/battery)
+      var heroObserver = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          animate();
+        } else {
+          if (animationId) cancelAnimationFrame(animationId);
+        }
+      }, { threshold: 0 });
 
-      // Soft vignette for depth
-      var overlay = ctx.createRadialGradient(
-        width / 2, height / 2, 0,
-        width / 2, height / 2, Math.max(width, height) * 0.6
-      );
-      overlay.addColorStop(0, 'rgba(74, 44, 42, 0)');
-      overlay.addColorStop(1, 'rgba(30, 16, 14, 0.4)');
-      ctx.fillStyle = overlay;
-      ctx.fillRect(0, 0, width, height);
-
-      time += 1;
-      animationId = requestAnimationFrame(animate);
+      heroObserver.observe(canvas.parentElement);
+    } catch (e) {
+      // If anything fails during setup, hide canvas so CSS gradient fallback shows
+      var c = document.getElementById('heroCanvas');
+      if (c) c.style.display = 'none';
     }
-
-    // Only animate when hero is visible (saves CPU/battery)
-    var heroObserver = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        animate();
-      } else {
-        if (animationId) cancelAnimationFrame(animationId);
-      }
-    }, { threshold: 0 });
-
-    heroObserver.observe(canvas.parentElement);
   }
 
   // ---- Sticky Header ----

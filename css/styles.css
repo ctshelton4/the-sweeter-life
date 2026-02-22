@@ -329,7 +329,11 @@ h3 { font-size: 1.5rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-chocolate);
+  /* Gradient fallback shown while canvas loads or if JS fails */
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(212, 162, 78, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(245, 214, 200, 0.07) 0%, transparent 50%),
+    linear-gradient(135deg, #3A2220 0%, var(--color-chocolate) 30%, #5A3230 60%, #3A2220 100%);
   overflow: hidden;
 }
 
