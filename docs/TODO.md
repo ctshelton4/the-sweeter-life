@@ -28,6 +28,15 @@
 - [ ] Consider adding a "Testimonials" or "Reviews" section
 - [ ] Add pricing info or "Starting at $XX" to menu cards (if Amanda wants)
 
+## Major Upgrade: Convert to React/Tailwind
+- [ ] Set up Next.js or Vite + React project
+- [ ] Install and configure Tailwind CSS
+- [ ] Rebuild all sections as React components
+- [ ] Integrate 21st.dev component library
+- [ ] Reconfigure Decap CMS for React (or switch to a headless CMS)
+- [ ] Set up Netlify deployment for React build
+- [ ] This is a multi-session project — do when ready to level up
+
 ## Future Enhancements
 - [ ] Google Business Profile for local SEO
 - [ ] Google Analytics or Plausible for visitor tracking

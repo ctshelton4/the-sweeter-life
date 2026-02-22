@@ -16,6 +16,131 @@
   const formSuccess = document.getElementById('formSuccess');
   const sections = document.querySelectorAll('.section');
 
+  // ---- Silk Background Animation (adapted from 21st.dev) ----
+  function handleSilkBackground() {
+    var canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      canvas.style.display = 'none';
+      return;
+    }
+
+    var animationId;
+    var time = 0;
+    var speed = 0.02;
+    var scale = 2;
+    var noiseIntensity = 0.8;
+
+    // Pixel stepping — higher = faster rendering, lower = sharper
+    var step = 3;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Simple noise function
+    function noise(x, y) {
+      var G = 2.71828;
+      var rx = G * Math.sin(G * x);
+      var ry = G * Math.sin(G * y);
+      return (rx * ry * (1 + x)) % 1;
+    }
+
+    function animate() {
+      var width = canvas.width;
+      var height = canvas.height;
+
+      // Dark chocolate base gradient
+      var gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#2A1A18');
+      gradient.addColorStop(0.5, '#3D2422');
+      gradient.addColorStop(1, '#2A1A18');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // Create silk pattern
+      var imageData = ctx.createImageData(width, height);
+      var data = imageData.data;
+
+      for (var x = 0; x < width; x += step) {
+        for (var y = 0; y < height; y += step) {
+          var u = (x / width) * scale;
+          var v = (y / height) * scale;
+
+          var tOffset = speed * time;
+          var tex_x = u;
+          var tex_y = v + 0.03 * Math.sin(8.0 * tex_x - tOffset);
+
+          var pattern = 0.6 + 0.4 * Math.sin(
+            5.0 * (tex_x + tex_y +
+              Math.cos(3.0 * tex_x + 5.0 * tex_y) +
+              0.02 * tOffset) +
+            Math.sin(20.0 * (tex_x + tex_y - 0.1 * tOffset))
+          );
+
+          var rnd = noise(x, y);
+          var intensity = Math.max(0, pattern - rnd / 15.0 * noiseIntensity);
+
+          // Warm gold/chocolate silk colors
+          // Blend between deep chocolate (74,44,42) and soft gold (212,162,78)
+          var r = Math.floor((74 + 100 * intensity) * intensity);
+          var g = Math.floor((44 + 80 * intensity) * intensity);
+          var b = Math.floor((42 + 20 * intensity) * intensity);
+
+          var index = (y * width + x) * 4;
+
+          // Fill the step x step block for performance
+          for (var dx = 0; dx < step && x + dx < width; dx++) {
+            for (var dy = 0; dy < step && y + dy < height; dy++) {
+              var i = ((y + dy) * width + (x + dx)) * 4;
+              if (i < data.length) {
+                data[i] = r;
+                data[i + 1] = g;
+                data[i + 2] = b;
+                data[i + 3] = 255;
+              }
+            }
+          }
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      // Subtle radial overlay for depth
+      var overlay = ctx.createRadialGradient(
+        width / 2, height / 2, 0,
+        width / 2, height / 2, Math.max(width, height) / 2
+      );
+      overlay.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
+      overlay.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+      ctx.fillStyle = overlay;
+      ctx.fillRect(0, 0, width, height);
+
+      time += 1;
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // Only animate when hero is visible (saves CPU)
+    var heroObserver = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        animate();
+      } else {
+        if (animationId) cancelAnimationFrame(animationId);
+      }
+    }, { threshold: 0 });
+
+    heroObserver.observe(canvas.parentElement);
+  }
+
   // ---- Sticky Header ----
   function handleHeaderScroll() {
     var sentinel = document.getElementById('hero');
@@ -349,6 +474,7 @@
 
   // ---- Initialize Everything ----
   function init() {
+    handleSilkBackground();
     handleHeaderScroll();
     handleMobileMenu();
     handleSmoothScroll();
