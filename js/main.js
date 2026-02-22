@@ -32,9 +32,9 @@
 
     var animationId;
     var time = 0;
-    var speed = 0.015;   // Slower, more graceful movement
+    var speed = 0.03;    // Visible flowing movement
     var scale = 1.8;     // Slightly zoomed in for tighter pattern
-    var noiseIntensity = 0.4; // Less grain, smoother silk
+    var noiseIntensity = 0.35; // Smooth silk
 
     // Mobile: larger steps for performance, desktop: sharper
     var isMobile = window.innerWidth < 768;
@@ -77,23 +77,22 @@
 
           var tOffset = speed * time;
           var tex_x = u;
-          var tex_y = v + 0.025 * Math.sin(6.0 * tex_x - tOffset);
+          var tex_y = v + 0.04 * Math.sin(7.0 * tex_x - tOffset);
 
-          var pattern = 0.65 + 0.35 * Math.sin(
-            4.0 * (tex_x + tex_y +
-              Math.cos(3.0 * tex_x + 4.0 * tex_y) +
-              0.015 * tOffset) +
-            Math.sin(15.0 * (tex_x + tex_y - 0.08 * tOffset))
+          var pattern = 0.55 + 0.45 * Math.sin(
+            5.0 * (tex_x + tex_y +
+              Math.cos(3.0 * tex_x + 5.0 * tex_y) +
+              0.02 * tOffset) +
+            Math.sin(18.0 * (tex_x + tex_y - 0.1 * tOffset))
           );
 
           var rnd = noise(x, y);
           var intensity = Math.max(0, Math.min(1, pattern - rnd / 20.0 * noiseIntensity));
 
-          // Tight blend: dark chocolate to slightly lighter warm chocolate
-          // Keeps close to #4A2C2A with subtle lighter silk ripples
-          var r = Math.floor(baseR * 0.6 + baseR * 0.7 * intensity);
-          var g = Math.floor(baseG * 0.6 + baseG * 0.65 * intensity);
-          var b = Math.floor(baseB * 0.6 + baseB * 0.6 * intensity);
+          // More contrast: dark chocolate shadows to warm golden highlights
+          var r = Math.floor(baseR * 0.45 + baseR * 1.1 * intensity);
+          var g = Math.floor(baseG * 0.4 + baseG * 0.95 * intensity);
+          var b = Math.floor(baseB * 0.4 + baseB * 0.8 * intensity);
 
           // Fill the step x step block
           for (var dx = 0; dx < step && x + dx < width; dx++) {
