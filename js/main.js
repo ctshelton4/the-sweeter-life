@@ -191,6 +191,140 @@
     });
   }
 
+  // ============================================
+  // CMS CONTENT LOADING
+  // Fetches JSON files managed by Decap CMS and
+  // updates the page. If fetch fails (offline,
+  // local file://), the HTML defaults remain.
+  // ============================================
+
+  // Helper: fetch a JSON file, return null on failure
+  function fetchJSON(url) {
+    return fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
+      .catch(function () {
+        return null; // Fail silently — HTML defaults stay
+      });
+  }
+
+  // Instagram overlay SVG (reused for each gallery item)
+  var igIconSVG = '<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+
+  // ---- Load About Section from CMS ----
+  function loadAbout(data) {
+    if (!data) return;
+
+    var section = document.getElementById('about');
+    if (!section) return;
+
+    // Update heading
+    var scriptEl = section.querySelector('.section__script');
+    var titleEl = section.querySelector('.section__title');
+    if (scriptEl && data.script) scriptEl.textContent = data.script;
+    if (titleEl && data.heading) titleEl.textContent = data.heading;
+
+    // Update bio paragraphs
+    if (data.paragraphs && data.paragraphs.length > 0) {
+      var contentDiv = section.querySelector('.about__content');
+      if (contentDiv) {
+        // Remove existing paragraphs
+        var oldParagraphs = contentDiv.querySelectorAll('.about__text');
+        oldParagraphs.forEach(function (p) { p.remove(); });
+
+        // Insert new paragraphs before the values section
+        var valuesDiv = contentDiv.querySelector('.about__values');
+        data.paragraphs.forEach(function (text) {
+          var p = document.createElement('p');
+          p.className = 'about__text';
+          p.textContent = text;
+          contentDiv.insertBefore(p, valuesDiv);
+        });
+      }
+    }
+
+    // Update photo if provided
+    if (data.image) {
+      var imageWrapper = section.querySelector('.about__image');
+      if (imageWrapper) {
+        var img = document.createElement('img');
+        img.src = data.image;
+        img.alt = data.image_alt || 'Amanda Shooter';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        imageWrapper.innerHTML = '';
+        imageWrapper.appendChild(img);
+      }
+    }
+  }
+
+  // ---- Load Gallery from CMS ----
+  function loadGallery(data) {
+    if (!data || !data.items) return;
+
+    // Only load if at least one item has a real image
+    var hasImages = data.items.some(function (item) { return item.image; });
+    if (!hasImages) return;
+
+    var section = document.getElementById('gallery');
+    if (!section) return;
+
+    // Update heading text
+    var scriptEl = section.querySelector('.section__script');
+    var titleEl = section.querySelector('.section__title');
+    var subtitleEl = section.querySelector('.section__subtitle');
+    if (scriptEl && data.script) scriptEl.textContent = data.script;
+    if (titleEl && data.heading) titleEl.textContent = data.heading;
+    if (subtitleEl && data.subtitle) subtitleEl.textContent = data.subtitle;
+
+    // Rebuild gallery grid
+    var grid = section.querySelector('.gallery__grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    data.items.forEach(function (item) {
+      if (!item.image) return; // Skip items without images
+
+      var a = document.createElement('a');
+      a.href = item.instagram_url || 'https://instagram.com/thesweeterlife_';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.className = 'gallery__item animate-fade-in animate-fade-in--visible';
+      a.setAttribute('aria-label', 'View on Instagram');
+
+      var img = document.createElement('img');
+      img.src = item.image;
+      img.alt = item.alt || 'Gallery image';
+      img.loading = 'lazy';
+
+      var overlay = document.createElement('div');
+      overlay.className = 'gallery__overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.innerHTML = igIconSVG + '<span>View on Instagram</span>';
+
+      a.appendChild(img);
+      a.appendChild(overlay);
+      grid.appendChild(a);
+    });
+  }
+
+  // ---- Load All CMS Content ----
+  function loadCMSContent() {
+    // Fetch all content files in parallel
+    Promise.all([
+      fetchJSON('content/about.json'),
+      fetchJSON('content/gallery.json'),
+      fetchJSON('content/settings.json')
+    ]).then(function (results) {
+      loadAbout(results[0]);
+      loadGallery(results[1]);
+      // Settings could be used to update phone/IG links site-wide
+      // For now, those are in the HTML and rarely change
+    });
+  }
+
   // ---- Initialize Everything ----
   function init() {
     handleHeaderScroll();
@@ -200,6 +334,7 @@
     handleActiveNav();
     handleScrollToTop();
     handleContactForm();
+    loadCMSContent(); // Load CMS-managed content
   }
 
   // Run when DOM is ready

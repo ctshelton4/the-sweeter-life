@@ -1,0 +1,80 @@
+# ============================================
+# Decap CMS Configuration
+# This defines what Amanda sees in the admin panel
+# ============================================
+
+# Backend: where content is stored (GitHub via Netlify's gateway)
+backend:
+  name: git-gateway    # Netlify handles the GitHub connection
+  branch: master       # Which branch to save changes to
+
+# Where uploaded images go
+media_folder: "assets/images"    # Folder in the repo
+public_folder: "/assets/images"  # URL path on the site
+
+# ============================================
+# COLLECTIONS — Each one becomes a section in the admin sidebar
+# ============================================
+collections:
+
+  # ---- Site Settings ----
+  # Amanda can update phone number, tagline, etc.
+  - name: "settings"
+    label: "Site Settings"
+    editor:
+      preview: false
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "content/settings.json"
+        fields:
+          - { name: "site_name", label: "Site Name", widget: "string" }
+          - { name: "tagline", label: "Tagline", widget: "string", hint: "Shown in the hero section" }
+          - { name: "phone", label: "Phone (display)", widget: "string", hint: "How the number appears on site, e.g. 626.733.7088" }
+          - { name: "phone_link", label: "Phone (link)", widget: "string", hint: "For tap-to-call, e.g. +16267337088" }
+          - { name: "instagram_handle", label: "Instagram Handle", widget: "string", hint: "Without the @, e.g. thesweeterlife_" }
+          - { name: "service_area", label: "Service Area", widget: "string" }
+
+  # ---- About Section ----
+  # Amanda can edit her bio and swap her photo
+  - name: "about"
+    label: "About Section"
+    editor:
+      preview: false
+    files:
+      - name: "about"
+        label: "About Me"
+        file: "content/about.json"
+        fields:
+          - { name: "script", label: "Script Text", widget: "string", hint: "Small cursive text above heading" }
+          - { name: "heading", label: "Heading", widget: "string" }
+          - name: "paragraphs"
+            label: "Bio Paragraphs"
+            widget: "list"
+            field: { name: "paragraph", label: "Paragraph", widget: "text" }
+            hint: "Each item becomes a paragraph. Click 'Add' for more."
+          - { name: "image", label: "Your Photo", widget: "image", required: false, hint: "Upload a photo of yourself" }
+          - { name: "image_alt", label: "Photo Description", widget: "string", hint: "Describe the photo for accessibility" }
+
+  # ---- Gallery ----
+  # Amanda can add/remove/reorder gallery images and link to IG posts
+  - name: "gallery"
+    label: "Instagram Gallery"
+    editor:
+      preview: false
+    files:
+      - name: "gallery"
+        label: "Gallery Images"
+        file: "content/gallery.json"
+        fields:
+          - { name: "script", label: "Script Text", widget: "string" }
+          - { name: "heading", label: "Heading", widget: "string" }
+          - { name: "subtitle", label: "Subtitle", widget: "string" }
+          - name: "items"
+            label: "Gallery Items"
+            widget: "list"
+            summary: "{{fields.alt}}"
+            fields:
+              - { name: "image", label: "Photo", widget: "image", hint: "Upload or choose from your images" }
+              - { name: "alt", label: "Description", widget: "string", hint: "What's in this photo? e.g. 'Pink rose cake with gold sprinkles'" }
+              - { name: "instagram_url", label: "Instagram Post URL", widget: "string", hint: "Link to this post on Instagram" }

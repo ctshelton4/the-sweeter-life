@@ -23,6 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sacramento&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
+  <!-- Netlify Identity (login system for the admin panel - free) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
 
@@ -107,9 +110,7 @@
 
         <div class="about__grid">
           <div class="about__image-wrapper animate-slide-up">
-            <div class="about__image placeholder-image" aria-label="Amanda Shooter, baker and owner of The Sweeter Life">
-              <span class="placeholder-image__text">Amanda's Photo</span>
-            </div>
+            <img class="about__image" src="assets/images/IMG_20260221_210629.webp" alt="Amanda Shooter, baker and owner of The Sweeter Life" style="object-fit:cover;">
           </div>
 
           <div class="about__content animate-slide-up">
@@ -172,8 +173,8 @@
         <div class="menu__grid">
           <!-- Custom Cakes -->
           <div class="card animate-slide-up">
-            <div class="card__image placeholder-image placeholder-image--cake">
-              <span class="placeholder-image__text">Custom Cakes</span>
+            <div class="card__image">
+              <img src="assets/images/488891755_18060287054511606_3272251940627046997_n.jpg" alt="Custom rosette cake with teal and lavender frosting" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="card__body">
               <h3 class="card__title">Custom Cakes</h3>
@@ -187,8 +188,8 @@
 
           <!-- Cupcakes -->
           <div class="card animate-slide-up">
-            <div class="card__image placeholder-image placeholder-image--cupcake">
-              <span class="placeholder-image__text">Cupcakes</span>
+            <div class="card__image">
+              <img src="assets/images/550219051_18078193838511606_2862150598754425378_n.jpg" alt="Green and cream rosette cupcakes with chocolate covered pretzels" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="card__body">
               <h3 class="card__title">Cupcakes</h3>
@@ -202,8 +203,8 @@
 
           <!-- Cake Pops -->
           <div class="card animate-slide-up">
-            <div class="card__image placeholder-image placeholder-image--cakepop">
-              <span class="placeholder-image__text">Cake Pops</span>
+            <div class="card__image">
+              <img src="assets/images/195295704_325024752330339_6372790141206606151_n.jpg" alt="Colorful themed cake pops with fun character designs" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="card__body">
               <h3 class="card__title">Cake Pops</h3>
@@ -217,8 +218,8 @@
 
           <!-- Chocolate Covered Strawberries -->
           <div class="card animate-slide-up">
-            <div class="card__image placeholder-image placeholder-image--strawberry">
-              <span class="placeholder-image__text">Chocolate Strawberries</span>
+            <div class="card__image">
+              <img src="assets/images/617490941_18050044127473786_4218127355270730702_n.jpg" alt="Chocolate covered strawberries with gold accents and red roses" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="card__body">
               <h3 class="card__title">Chocolate Covered Fruits</h3>
@@ -243,35 +244,56 @@
         </div>
 
         <div class="gallery__grid">
-          <!-- Replace these placeholders with real images linking to Instagram posts -->
+          <!--
+            TO UPDATE: Replace href with the specific Instagram post URL
+            and swap the image src with a new photo in assets/images/
+          -->
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g1">
-              <span class="placeholder-image__text">IG Post 1</span>
+            <img src="assets/images/625055768_18304681915285773_2042699771201168423_n.jpg" alt="Sweet creation by The Sweeter Life" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g2">
-              <span class="placeholder-image__text">IG Post 2</span>
+            <img src="assets/images/626273977_18395770009182844_1876104625303660665_n.jpg" alt="Sweet creation by The Sweeter Life" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g3">
-              <span class="placeholder-image__text">IG Post 3</span>
+            <img src="assets/images/621492446_18121258825584295_5596091444295469878_n.jpg" alt="Sweet creation by The Sweeter Life" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g4">
-              <span class="placeholder-image__text">IG Post 4</span>
+            <img src="assets/images/621560353_18109361638637628_3223241252519605392_n.jpg" alt="Sweet creation by The Sweeter Life" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g5">
-              <span class="placeholder-image__text">IG Post 5</span>
+            <img src="assets/images/155192603_260266385592683_2202002238787937702_n.jpg" alt="Happy birthday box with chocolate strawberries and geometric heart" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
+
           <a href="https://instagram.com/thesweeterlife_" target="_blank" rel="noopener noreferrer" class="gallery__item animate-fade-in" aria-label="View on Instagram">
-            <div class="placeholder-image placeholder-image--gallery placeholder-image--g6">
-              <span class="placeholder-image__text">IG Post 6</span>
+            <img src="assets/images/496475662_18063373655511606_2228501397665140523_n.jpg" alt="Sweet creation by The Sweeter Life" loading="lazy">
+            <div class="gallery__overlay" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>View on Instagram</span>
             </div>
           </a>
         </div>
@@ -535,5 +557,14 @@
   </button>
 
   <script src="js/main.js"></script>
+
+  <!-- Redirect after Netlify Identity login (sends admin users to /admin) -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function(user) {
+        if (!user) { window.netlifyIdentity.on("login", function() { document.location.href = "/admin/"; }); }
+      });
+    }
+  </script>
 </body>
 </html>

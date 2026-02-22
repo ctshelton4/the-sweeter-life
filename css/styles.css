@@ -318,14 +318,58 @@ h3 { font-size: 1.5rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-chocolate) 0%, #6B3A38 50%, var(--color-chocolate) 100%);
+  background: linear-gradient(135deg, var(--color-chocolate) 0%, #6B3A38 30%, #5A3230 60%, var(--color-chocolate) 100%);
   overflow: hidden;
 }
 
+/* Soft animated glow */
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(212, 162, 78, 0.15) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(212, 162, 78, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(245, 214, 200, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(212, 162, 78, 0.1) 0%, transparent 60%);
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+
+/* Floating sparkle dots */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(212, 162, 78, 0.08) 0%, transparent 70%);
+  animation: heroFloat 12s ease-in-out infinite alternate;
+}
+
+.hero::after {
+  width: 200px;
+  height: 200px;
+  bottom: 15%;
+  left: -3%;
+  background: radial-gradient(circle, rgba(245, 214, 200, 0.06) 0%, transparent 70%);
+  animation: heroFloat 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes heroGlow {
+  0%   { opacity: 0.6; transform: scale(1); }
+  50%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.8; transform: scale(1.02); }
+}
+
+@keyframes heroFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(20px, -15px) scale(1.1); }
+  100% { transform: translate(-10px, 10px) scale(1.05); }
 }
 
 .hero__content {
@@ -494,7 +538,15 @@ h3 { font-size: 1.5rem; }
   border-radius: var(--radius);
   overflow: hidden;
   display: block;
+  position: relative;
   transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.gallery__item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
 }
 
 .gallery__item:hover {
@@ -505,6 +557,32 @@ h3 { font-size: 1.5rem; }
 .gallery__item .placeholder-image--gallery {
   aspect-ratio: 1;
   height: auto;
+}
+
+/* Instagram overlay on hover */
+.gallery__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(74, 44, 42, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--color-white);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.gallery__overlay span {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.gallery__item:hover .gallery__overlay {
+  opacity: 1;
 }
 
 .gallery__cta {
