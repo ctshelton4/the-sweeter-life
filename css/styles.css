@@ -329,7 +329,7 @@ h3 { font-size: 1.5rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2A1A18;
+  background-color: var(--color-chocolate);
   overflow: hidden;
 }
 
@@ -374,16 +374,16 @@ h3 { font-size: 1.5rem; }
   background: linear-gradient(
     90deg,
     var(--color-text-light) 0%,
-    var(--color-text-light) 30%,
+    var(--color-text-light) 40%,
     var(--color-gold) 50%,
-    var(--color-text-light) 70%,
+    var(--color-text-light) 60%,
     var(--color-text-light) 100%
   );
-  background-size: 300% auto;
+  background-size: 400% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: heroShimmer 4s ease-in-out infinite;
+  animation: heroShimmer 10s ease-in-out infinite;
 }
 
 @keyframes heroShimmer {
