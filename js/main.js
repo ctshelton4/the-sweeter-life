@@ -167,7 +167,7 @@
     });
   }
 
-  // ---- Contact Form Placeholder Handling ----
+  // ---- Contact Form — Netlify Forms Submission ----
   function handleContactForm() {
     if (!contactForm || !formSuccess) return;
 
@@ -180,14 +180,36 @@
       var message = contactForm.querySelector('#contactMessage');
 
       if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
-        // Let the browser's built-in validation handle it
         contactForm.reportValidity();
         return;
       }
 
-      // Show success message (placeholder - no actual submission)
-      contactForm.hidden = true;
-      formSuccess.hidden = false;
+      // Disable button while submitting
+      var submitBtn = contactForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      // Submit to Netlify
+      var formData = new FormData(contactForm);
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+        .then(function (response) {
+          if (response.ok) {
+            contactForm.hidden = true;
+            formSuccess.hidden = false;
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+          alert('Something went wrong. Please try calling (626) 733-7088 or DMing on Instagram instead!');
+        });
     });
   }
 
